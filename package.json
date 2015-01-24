@@ -1,0 +1,29 @@
+{
+  "name": "datahub",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test",
+    "dist": "browserify index.js > dist/bundle.js && browserify index.js | uglifyjs -c > dist/bundle.min.js",
+    "publish": "npm test && npm dist"
+  },
+  "author": "ssnau",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "mocha": "^2.1.0",
+    "object-keys": "^1.0.3",
+    "sinon": "^1.12.2",
+    "util-each": "^1.0.1"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ssnau/datahub"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0"
+  }
+}
