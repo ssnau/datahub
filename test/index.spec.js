@@ -2,6 +2,7 @@ var Hub = require('../');
 console.log(Hub);
 var assert = require('assert');
 var sinon = require('sinon');
+var count = 1;
 
 var next = function (func) {
   setTimeout(function(){
@@ -10,10 +11,10 @@ var next = function (func) {
 }
 
 describe('get instances', function () {
-  it('should get different instance', function() {
+  it('should get same instance', function() {
     var data1 = Hub.getInstance();
     var data2 = Hub.getInstance();
-    assert.notEqual(data1, data2);
+    assert.equal(data1, data2);
   });
 
   it('should get the same instance', function() {
@@ -32,9 +33,9 @@ describe('get instances', function () {
 describe('should work with event', function(){
   var hub;
   beforeEach(function() {
-    hub = Hub.getInstance();
+    count++;
+    hub = Hub.getInstance(count);
   });
-
 
   it('should listen to event', function (done){
     var callback = sinon.spy();
@@ -101,7 +102,6 @@ describe('should work with event', function(){
 
   });
 
-
   it('should call with combined event', function (done) {
     var callback = sinon.spy();
     hub.on(['hello', 'world', 'body'], callback);
@@ -140,14 +140,15 @@ describe('should work with event', function(){
 describe('should work with mutiple listeners', function (done) {
   var hub, callback1, callback2;
   beforeEach(function() {
-    hub = Hub.getInstance();
+    count++;
+    hub = Hub.getInstance(count);
     callback1 = sinon.spy();
     callback2 = sinon.spy();
     hub.on(['a', 'y', 'z'], callback1);
     hub.on(['x', 'y', 'z'], callback2);
   });
 
-  it('simple case 1',  function(done){
+  it('simple case 1',  function(done) {
     hub.set('y', 1);
 
     next(function () {
@@ -185,7 +186,8 @@ describe('should work with mutiple listeners', function (done) {
 describe('getter and setter', function() {
   var hub;
   beforeEach(function(done) {
-    hub = Hub.getInstance();
+    count++;
+    hub = Hub.getInstance(count);
     hub.set('name', 'jack');
     next(done);
   });
@@ -211,4 +213,72 @@ describe('getter and setter', function() {
     });
 
   });
+});
+
+describe('test with object', function (done) {
+  var hub;
+  beforeEach(function() {
+    count++;
+    hub = Hub.getInstance(count);
+  });
+
+  it('should called set object with update value', function(done) {
+    var callback = sinon.spy();
+    hub._data['person'] = {name: 'jack'};
+    hub.on('person', callback);
+
+    var person = hub.get('person');
+    person.name = 'john';
+    hub.set('person', person);
+    next(function(){
+      assert.equal(callback.calledOnce, true);
+      done();
+    });
+  });
+
+  it('should not called after set object with non-update value', function(done) {
+    var callback = sinon.spy();
+    hub._data['person'] = {name: 'jack'};
+    hub.on('person', callback);
+
+    var person = hub.get('person');
+    hub.set('person', person);
+    next(function(){
+      assert.equal(callback.notCalled, true);
+      done();
+    });
+  });
+
+  it('should called with changed array', function (done) {
+    var callback = sinon.spy();
+    hub._data['cards'] = [1,2,3];
+    hub.on('cards', callback);
+
+    var cards = hub.get('cards');
+    cards[0] = 5;
+    hub.set('cards', cards);
+
+    next(function(){
+      assert.equal(callback.calledOnce, true);
+      done();
+    });
+
+  });
+
+  it('should not called with unchanged array', function (done) {
+    var callback = sinon.spy();
+    hub._data['cards'] = [1,2,3];
+    hub.on('cards', callback);
+
+    var cards = hub.get('cards');
+    cards.push('x');
+    cards.pop();
+
+    next(function(){
+      assert.equal(callback.notCalled, true);
+      done();
+    });
+
+  });
+
 });
