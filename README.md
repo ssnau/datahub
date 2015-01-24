@@ -17,15 +17,17 @@ Data Flow
 =====
 
 ```
-|-------|  hub.set("any-prop", val)   |----------------|   _digest()    |------------------|
-| state |  -------------------------> | trasient state | -------------->|   updated state  |
-|-------|                             |----------------|                |------------------|
-                                           ^      |                              | 
-                                           |      |                              |   emit event
-                                           |_ _ _ |                              V
-                                    hub.set('any-prop', val)            |------------------|
-                                                                        | update component |   
-                                                                        |------------------| 
+ _______                               ______________               ------------ 
+|       |  hub.set("any-prop", val)   |              |   _digest() |            |
+| state |  -------------------------> |   trasient   | ----------->|   updated  |
+|       |                             |     state    |             |    state   |
+|_______|                             |______________|             |____________|
+                                           ^      |                       | 
+                                           |      |                       |   emit event
+                                           |_ _ _ |                       V
+                                    hub.set('any-prop', val)     |------------------|
+                                                                 | update component |   
+                                                                 |------------------| 
 ```
 
 API
