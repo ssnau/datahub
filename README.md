@@ -43,7 +43,7 @@ Update a specified propName as the passed-in value.
 
 Get a specifed propName value;
 
-###on(Array|String[optional], callback)
+###on(props, callback)
 
 Listen to any number of prop changes. 
 The callback will invoke after a digest cycle only if any listened props were changed
@@ -70,7 +70,7 @@ composite: 1 , 2
 
 ```
 
-###watch(String, callback)
+###watch(expression, callback)
 
 Listen to an expression and campare the newVal with the old value every digest cycle.
 It will invoke the callback once detect the newVal is different with the oldVal.
