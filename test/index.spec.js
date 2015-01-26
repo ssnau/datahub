@@ -6,7 +6,7 @@ var count = 1;
 
 var next = function (func) {
   setTimeout(function(){
-    func();
+      func();
   }, 10);
 }
 
@@ -74,7 +74,7 @@ describe('should work with event', function(){
     hub.set('abcd', 100);
     hub.set('ava', 900);
     var callback = sinon.spy();
-    setTimeout(function(){
+    next(function(){
       hub.on('abcd', function (val) {
         assert(val, 100);
         hub.on('ava', callback);
@@ -83,7 +83,7 @@ describe('should work with event', function(){
           done();
         });
       });
-    }, 100);
+    }, 30);
   });
 
   it('should only call once no matter how you change it', function (done) {
@@ -279,6 +279,30 @@ describe('test with object', function (done) {
       done();
     });
 
+  });
+
+});
+
+
+describe('watch function', function(){
+
+  var hub;
+  beforeEach(function() {
+    count++;
+    hub = Hub.getInstance(count);
+  });
+
+  it('should watch the change', function(done){
+    var res = 0;
+    hub.watch('hello + world', function(val) {
+      res = val;
+    });
+    hub.set('hello', 3);
+    hub.set('world', 10);
+    next(function(){
+      assert.equal(res, 13);
+      done();
+    });
   });
 
 });
