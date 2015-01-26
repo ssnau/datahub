@@ -1,17 +1,9 @@
 datahub
 ====
 
-A tiny simple center datahub for traditional frontend project.
+A tiny data layer for any frontend project.
 
-In many traditional javascript project, we use JQuery to fetch DOM Node to get data value and manipulate DOM directly to sync data change.
-
-However, such code is unmaintainable. If several component affect each other and change the DOM of each other, nobody knows how to mantain it.
-
-Thus, 'datahubjs' comes out.
-
-Datahub suggests you to only manipulate data to make your application logic clearer and more easy to read. All you need to do is to listen&invoke data change by config each component.
-And each component should totally unaware others' existance.
-
+Datahub suggests you to only manipulate data to make your application logic clearer and more easy to read. All you need to do is to listen&invoke data change by config each component. And each component should totally unaware others' existance.
 
 Data Flow
 =====
@@ -22,12 +14,12 @@ Data Flow
 | state |  -------------------------> |   trasient   | ----------->|   updated  |
 |       |                             |     state    |             |    state   |
 |_______|                             |______________|             |____________|
-                                           ^      |                       | 
-                                           |      |                       |   emit event
-                                           |_ _ _ |                       V
-                                    hub.set('any-prop', val)     |------------------|
-                                                                 | update component |   
-                                                                 |------------------| 
+                                          ^      |                       | 
+                                          |      |                       |   invoke callbacks
+                                          |_ _ _ |                       V
+                                    hub.set('any-prop', val)    |------------------|
+                                                                | update component |   
+                                                                |------------------| 
 ```
 
 API
@@ -89,7 +81,6 @@ hub.set('world', 3);
 output: 13
 
 ```
-
 
 License
 ====
