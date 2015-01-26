@@ -5,6 +5,15 @@ A tiny data layer for any frontend project.
 
 Datahub suggests you to only manipulate data to make your application logic clearer and more easy to read. All you need to do is to listen&invoke data change by config each component. And each component should totally unaware others' existance.
 
+Install
+------
+
+```
+npm install datahubjs
+```
+
+Or you can use the file in `dist`, a global variable named `DataHub` is provided.
+
 Data Flow
 =====
 

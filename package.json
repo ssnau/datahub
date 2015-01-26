@@ -1,10 +1,10 @@
 {
   "name": "datahub",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "main": "index.js",
   "scripts": {
     "test": "mocha test",
-    "dist": "browserify index.js > dist/bundle.js && browserify index.js | uglifyjs -c > dist/bundle.min.js",
+    "dist": "browserify --standalone DataHub index.js > dist/bundle.js && browserify --standalone DataHub index.js | uglifyjs -c > dist/bundle.min.js",
     "publish": "npm test && npm dist"
   },
   "author": "ssnau",
